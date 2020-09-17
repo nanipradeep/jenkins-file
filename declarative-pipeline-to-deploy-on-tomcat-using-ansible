@@ -1,0 +1,15 @@
+pipeline {
+    agent any
+    stages {
+        stage('SCM Checkout'){
+            steps{
+               git 'https://github.com/nanipradeep/myapp-ansible.git'
+            }
+        }
+        stage('Execute Ansible') {
+            steps{
+                ansiblePlaybook credentialsId: 'new_ansible_tomcat', disableHostKeyChecking: true, installation: 'ansible2', inventory: 'dev.inv', playbook: 'apache.yml'
+            }
+        }
+    }
+}
