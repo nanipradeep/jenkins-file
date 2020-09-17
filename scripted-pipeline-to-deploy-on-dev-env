@@ -1,0 +1,25 @@
+node{
+    stage("Scm Checkout"){
+        git 'https://github.com/javahometech/my-app.git'
+    }
+    stage('Mvn package'){
+        def mvnHome = tool name: 'M2_HOME', type: 'maven'
+        def mvnCMD = "${mvnHome}/bin/mvn"
+        sh "${mvnCMD} clean package"
+    }
+    stage('Build Docker Image'){
+       sh 'docker build -t pradeepaz/my-app:2.0.0 .' 
+    }
+    stage('push Docker Image'){
+      withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubpwds')]) {
+         sh "docker login -u pradeepaz -p ${dockerHubpwds}"
+      }
+       sh 'docker push pradeepaz/my-app:2.0.0 ' 
+    }  
+    stage('Run container on dev server'){
+       def dockerRun = 'docker run -p 8080:8080 -d --name my-app pradeepaz/my-app:2.0.0' 
+       sshagent(['deploy_user']) {
+        sh "ssh -o StrictHostKeyChecking=no ec2-user@18.188.252.222 ${dockerRun}"
+      }    
+    }  
+}    
