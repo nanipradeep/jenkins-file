@@ -1,17 +1,18 @@
 pipeline {
     agent any
+    
     environment {
-        PATH = "/opt/maven/bin:$PATH"
+        PATH = "/etc/maven/:$PATH"
     }
     stages {
-        stage('Hello') {
-            steps {
+        stage('Git Checkout'){
+            steps{
                 git "https://github.com/javahometech/myweb"
             }
-        }
-        stage("build code") {
-            steps {
-              sh "mvn clean install"
+        }   
+        stage('maven Build'){
+            steps{
+                sh"mvn clean install"
             }
         }     
     }
