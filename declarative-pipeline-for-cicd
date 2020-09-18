@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Hello') {
             steps {
-               git "https://github.com/javahometech/myweb.git"
+               git "https://github.com/nanipradeep/hello-world.git"
             }
         }
         stage("build code") {
