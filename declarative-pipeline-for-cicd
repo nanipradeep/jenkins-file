@@ -16,7 +16,8 @@ pipeline {
             }
         }
         stage("deploy-dev"){
-            sshagent(['tomcat-new-cicd']) {
+            steps{
+                sshagent(['tomcat-new-cicd']) {
                 ssh """
                     scp -o StrictHostKeyChecking=no target/myweb.war ec2-user@172.31.33.128/opt/tomcat8/webapps/
                  
@@ -25,6 +26,8 @@ pipeline {
                     ssh ec2-user@172.31.33.128 /opt/tomat8/bin/startup.sh
 
                 """  
+            }
+            
             }
         }     
     }
