@@ -6,13 +6,13 @@ pipeline {
     stages {
         stage("Git checkout") {
             steps {
-               git 'https://github.com/nanipradeep/hello-world.git'
+               git "https://github.com/nanipradeep/hello-world.git"
             }
         }
         stage("maven build") {
             steps {
-              sh "-Dmaven.surefire.debug test"
-              sh "clean install package" 
+              sh "mvn clean package"
+              sh "mv target/*.war target/myweb.war" 
             }
         }
          stage("deploy-dev") {
