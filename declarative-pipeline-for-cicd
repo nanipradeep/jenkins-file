@@ -12,7 +12,7 @@ pipeline {
         stage("maven build") {
             steps {
               sh "-Dmaven.surefire.debug test"
-              sh "mv target/*.war target/myweb.war" 
+              sh "clean install package" 
             }
         }
          stage("deploy-dev") {
